@@ -9,7 +9,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 
 from api.authentication import set_token_as_cookie
-from api.models import Users
 from api.serializers import UserLoginSerializer
 
 from typing import Dict

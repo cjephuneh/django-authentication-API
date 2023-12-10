@@ -6,17 +6,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
-from api.models import Users
-from api.authentication import (
-    set_token_as_cookie,
-    delete_token_cookie,
-    TokenAuthenticationCookie,
-)
-from api.serializers import (
-    UserRegisterSerializer,
-    UserLoginSerializer,
-    UserDetailSerializer,
-)
+from api.serializers import UserRegisterSerializer
 
 from typing import Dict
 
@@ -32,7 +22,7 @@ class UserRegisterView(CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = UserRegisterSerializer
 
-    def get_response_data(self, data=None) -> Dict:
+    def get_response_data(self, data: Dict = None) -> Dict:
         """
         Get the default response data for a successful
         user registration.
@@ -61,4 +51,4 @@ class UserRegisterView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         response_data = self.get_response_data(serializer.data)
-        return Response(data=response_data, status=status.HTTP_201_CREATED)
+        return Response(response_data, status.HTTP_201_CREATED)
