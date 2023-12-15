@@ -3,6 +3,14 @@
 User Authentication APIs using Django Rest Framework (DRF).
 It provides a flexible and secure authentication endpoints for your Django applications.
 
+### Table of Contents
+
+1. [Features](#features)
+2. [Prerequisites](#prerequisites)
+3. [Sample API Request](#sample-api-request)
+4. [Installation](#installation)
+5. [License](#license)
+
 ### Features
 
 - Token-based authentication with Http-Cookies.
@@ -18,7 +26,7 @@ It provides a flexible and secure authentication endpoints for your Django appli
 
 ### Sample API Request
 
-User Registration Api
+User Registration API
 
 ```http
 POST /api/register/
@@ -31,7 +39,7 @@ Content-Type: application/json
 }
 ```
 
-User Login Api
+User Login API
 
 ```http
 POST /api/login/
@@ -39,7 +47,7 @@ Content-Type: application/json
 
 {
   "username": "username_or_email",
-  "password": "strong_password"
+  "password": "your_password"
 }
 ```
 
@@ -93,7 +101,7 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Visit http://localhost:8000/ in your browser for access this app;ication.
+Visit http://localhost:8000/ in your browser for access this application.
 
 ### License
 
