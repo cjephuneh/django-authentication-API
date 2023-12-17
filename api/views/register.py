@@ -24,7 +24,7 @@ class UserRegisterView(CreateAPIView):
 
     def get_response_data(self, data: Dict = None) -> Dict:
         """
-        Get the default response data for a successful
+        Get the default response data for a successfully
         user registration.
 
         Return Type -> Dict:
@@ -32,7 +32,7 @@ class UserRegisterView(CreateAPIView):
         """
         return {
             "status": status.HTTP_201_CREATED,
-            "message": {"success": _("User register successfully.")},
+            "message": _("User register successfully."),
             "data": data,
         }
 
@@ -50,5 +50,6 @@ class UserRegisterView(CreateAPIView):
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
         response_data = self.get_response_data(serializer.data)
         return Response(response_data, status.HTTP_201_CREATED)

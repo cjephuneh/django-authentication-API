@@ -30,11 +30,11 @@ class UserLoginView(GenericAPIView):
         Get the default response data for a successful login.
 
         Return Type -> Dict:
-        dict: The default response data.
+        # dict: The default response data.
         """
         return {
             "status": status.HTTP_200_OK,
-            "message": {"success": _("Login successfully.")},
+            "message": _("You logged in successfully."),
         }
 
     def post(self, request: HttpRequest) -> HttpResponse:

@@ -33,4 +33,10 @@ class ChangePasswordView(UpdateAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"success": _("Your new password has been saved.")})
+
+        response_data = {
+            "status": status.HTTP_200_OK,
+            "message": _("Your new password has been saved."),
+        }
+
+        return Response(response_data, status.HTTP_200_OK)

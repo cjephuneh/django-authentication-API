@@ -3,7 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import EmailValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
 
-from rest_framework import status
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -47,25 +46,27 @@ class UserRegisterSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
+        """
+        Check if a user account with the given username
+        or email does not already exist.
+        """
+        username = attrs.get("username", None)
+        email = attrs.get("email", None)
+
+        user_object = Users.objects.filter(Q(username=username) | Q(email=email))
+
+        if user_object.exists():
+            raise ValidationError({"error": _("Account already exist.")})
+
         return attrs
 
     def create(self, validated_data):
         """
-        Create new user account if not already exists.
-        """
-        username = validated_data.get("username", None)
-        email = validated_data.get("email", None)
-        password = validated_data.get("password", None)
+        Create a new user account if it does not already exist.
 
-        user_object = Users.objects.filter(Q(username=username) | Q(email=email))
-        
-        if user_object.exists():
-            raise ValidationError(
-                {
-                    "status": status.HTTP_400_BAD_REQUEST,
-                    "message": {"error": _("Account already exist.")},
-                }
-            )
+        Return Type -> Users():
+        # Users: The created user instance.
+        """
 
         user = Users.objects.create_user(**validated_data)
         user.set_password(password)
