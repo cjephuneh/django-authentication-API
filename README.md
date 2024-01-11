@@ -88,8 +88,13 @@ Content-Type: application/json
       <td>-</td>
     </tr>
     <tr>
-      <td>api/user/account/password/change/</td>
-      <td>-</td>
+      <td>api/user/account/reset-password/</td>
+      <td>POST</td>
+      <td>POST</td>
+    </tr>
+    <tr>
+      <td>api/user/account/reset-password/confirm/token/</td>
+      <td>UPDATE</td>
       <td>UPDATE</td>
     </tr>
     <tr>
@@ -103,19 +108,14 @@ Content-Type: application/json
       <td>UPDATE</td>
     </tr>
     <tr>
+      <td>api/user/account/password/change/</td>
+      <td>-</td>
+      <td>UPDATE</td>
+    </tr>
+    <tr>
       <td>api/user/account/profile</td>
       <td>-</td>
       <td>GET, UPDATE</td>
-    </tr>
-    <tr>
-      <td>api/user/forgot-password/</td>
-      <td>POST</td>
-      <td>POST</td>
-    </tr>
-    <tr>
-      <td>api/user/reset-password/token/</td>
-      <td>POST</td>
-      <td>POST</td>
     </tr>
    </tbody>
 </table>
