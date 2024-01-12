@@ -40,7 +40,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 
 class ResetPasswordConfirmSerializer(serializers.Serializer):
     """
-    A Serializer class for confirming reset password
+    A Serializer for confirming the reset password
     to the new password.
     """
 
@@ -64,12 +64,21 @@ class ResetPasswordConfirmSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        if attrs["new_password"] != attrs["new_password_confirm"]:
-            return serializers.ValidationError(
-                {"error": "Your passwords field didn't match."}
-            )
+        """
+        Validate that the new password and confirm new
+        password field match.
+        """
+
+        if not attrs["new_password"] == attrs["new_password_confirm"]:
+            raise ValidationError({"error": "Your passwords field did not match."})
 
         return attrs
 
-    def save(self):
-        pass
+    def update(self, instance, validated_data):
+        """
+        Update the user instance with the new password.
+        """
+        new_password = validated_data.get("new_password", instance.password)
+        instance.set_password(new_password)
+        instance.save()
+        return instance
