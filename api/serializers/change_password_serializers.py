@@ -56,27 +56,24 @@ class ChangePasswordSerializer(serializers.Serializer):
             self.user.set_password(password)
             self.user.save()
 
-    def validate_old_password(self, password=None):
-        """
-        Validate the users old password.
-        """
-        if self.user and not self.user.check_password(password):
-            raise ValidationError(
-                {"error": _("Your old password was entered incorrectly.")}
-            )
-        return password
-
     def validate(self, attrs):
         """
         Validate that the new password and confirmation match.
         """
+        old_password = attrs.get("old_password")
         new_password = attrs.get("new_password")
         confirm_new_password = attrs.get("confirm_new_password")
+
+        if self.user and not self.user.check_password(old_password):
+            raise ValidationError(
+                {"error": _("Your old password was entered incorrectly.")}
+            )
 
         if new_password != confirm_new_password:
             raise ValidationError(
                 {"error": _("Your new password fields didn't match.")}
             )
+
         return attrs
 
     def save(self):
