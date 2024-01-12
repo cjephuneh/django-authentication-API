@@ -69,6 +69,6 @@ class UserRegisterSerializer(serializers.Serializer):
         """
 
         user = Users.objects.create_user(**validated_data)
-        user.set_password(password)
-        user.save()
+        user.set_password(validated_data["password"])
+        user.send_confirmation_mail()
         return user

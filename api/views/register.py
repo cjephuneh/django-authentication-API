@@ -2,11 +2,14 @@ from django.http import HttpResponse, HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status
+from rest_framework.exceptions import NotFound
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
 
 from api.serializers import UserRegisterSerializer
+from api.models import Users
 
 from typing import Dict
 
@@ -53,3 +56,41 @@ class UserRegisterView(CreateAPIView):
 
         response_data = self.get_response_data(serializer.data)
         return Response(response_data, status.HTTP_201_CREATED)
+
+
+class UserAccountConfirmView(APIView):
+    """
+    An API View for confirming a user account registration.
+    """
+
+    permission_classes = [AllowAny]
+
+    def get_auth_user(self, token: str = None) -> Users:
+        """
+        Get authenticated user by their Security token.
+
+        Return Type -> Users():
+        # A Users object if exist, otherwise None.
+        """
+        return Users.objects.filter(security_token=token).first()
+
+    def post(self, token: str = None) -> HttpResponse:
+        """
+        Handle POST request to confirm a user account.
+
+        Return Type -> HttpResponse():
+        # HttpResponse: Response indicating the status of the account confirmation.
+        """
+        user_token = self.get_auth_user(token=token)
+
+        if user_token and not user_token.is_token_expired():
+            user_token.is_active = True
+            user_token.security_token = ""
+            user_token.save()
+            response_data = {
+                "status": status.HTTP_200_OK,
+                "message": "Your account confirmed successfully.",
+            }
+            return Response(response_data, status.HTTP_200_OK)
+
+        raise NotFound({"error": _("Invalid token or not accepted.")})
