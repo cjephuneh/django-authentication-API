@@ -1,4 +1,6 @@
+from django.core import validators
 from django.utils.translation import gettext_lazy as _
+from django.utils.deconstruct import deconstructible
 
 from rest_framework.exceptions import ValidationError
 
@@ -27,3 +29,13 @@ def password_validator(password: str) -> str:
         raise ValidationError(_("Password must be strong."))
 
     return password
+
+
+@deconstructible
+class UsernameValidator(validators.RegexValidator):
+    regex = r"^[a-zA-Z0-9_-]+$"
+    message = _(
+        "Enter a valid username. It contain only letters, "
+        "numbers, and /-/_ characters."
+    )
+    flags = 0
