@@ -1,13 +1,12 @@
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import EmailValidator
-from django.contrib.auth.validators import UnicodeUsernameValidator
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from api.validators import password_validator
 from api.models import Users
+from api.validators import password_validator, UsernameValidator
 
 
 class UserRegisterSerializer(serializers.Serializer):
@@ -21,7 +20,7 @@ class UserRegisterSerializer(serializers.Serializer):
         error_messages={
             "blank": _("Username field is required."),
         },
-        validators=[UnicodeUsernameValidator],
+        validators=[UsernameValidator],
         required=True,
     )
 
@@ -71,4 +70,5 @@ class UserRegisterSerializer(serializers.Serializer):
         user = Users.objects.create_user(**validated_data)
         user.set_password(validated_data["password"])
         user.send_confirmation_mail()
+        user.save()
         return user

@@ -1,6 +1,5 @@
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import EmailValidator
-from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError, NotFound

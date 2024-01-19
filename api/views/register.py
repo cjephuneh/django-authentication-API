@@ -83,7 +83,7 @@ class UserAccountConfirmView(APIView):
         """
         user_token = self.get_auth_user(token=token)
 
-        if user_token and not user_token.is_token_expired():
+        if user_token and not user_token.is_token_expired:
             user_token.is_active = True
             user_token.security_token = ""
             user_token.save()
